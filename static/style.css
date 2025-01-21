@@ -1,0 +1,14 @@
+.one{
+    height: 1516px;
+    width: 1516px;
+    border: 2px solid black;
+    margin-left: 40%;
+    border-radius: 50%;
+    margin-bottom: 400px;
+    
+}
+.two{
+    position:fixed;
+    height: 982px;
+    width: 1512px;
+}

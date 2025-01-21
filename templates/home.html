@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluid Futures</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Paprika&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Ensure the map container takes up half the height of the viewport */
+        #map {
+            height: 50vh !important; /* 50% of the viewport height */
+            width: 100% !important; /* Full width of the container */
+        }
+        /* Additional styling to ensure correct display */
+        body, html {
+            scroll-behavior: smooth;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            
+        }
+        section:nth-child(1) {
+	justify-content: flex-start;
+	background-size: cover;
+	background-position: center;
+	color: #fff;
+	width: 102%;
+    background-image: url('static/home2.jpg');
+	
+}
+
+        #map-container {
+            position: relative;
+            width: 100%;
+        }
+        #info-container {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        let map;
+
+        function initMap() {
+            // Map options
+            const options = {
+                zoom: 6, // Adjust zoom level based on your needs
+                center: { lat: 37.7749, lng: -122.4194 } // Center the map to your desired location
+            };
+
+            // Create a new map
+            map = new google.maps.Map(document.getElementById('map'), options);
+
+            // Add a click event listener to the map
+            map.addListener('click', function(event) {
+                placeMarker(event.latLng);
+            });
+        }
+
+        // Function to place a marker and show information
+        function placeMarker(location) {
+            // Create a marker at the clicked location
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'Selected Location'
+            });
+
+            // Show information about the selected location
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<div>Latitude: ${location.lat().toFixed(6)}<br>Longitude: ${location.lng().toFixed(6)}</div>`
+            });
+
+            infoWindow.open(map, marker);
+
+            // Optional: Display the information in a div on the page
+            document.getElementById('info-container').innerHTML = `
+                <h3>Selected Location</h3>
+                <p>Latitude: ${location.lat().toFixed(6)}</p>
+                <p>Longitude: ${location.lng().toFixed(6)}</p>
+            `;
+        }
+    </script>
+    <!-- Replace 'YOUR_API_KEY' with your actual API key -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</head>
+<body>
+    <section class="abs">
+        <input type="checkbox" id="check">
+        <header>
+            <h2><a href="#" class="logo">Fluid Futures</a></h2>
+            <div class="navigation">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="#about">About</a>
+                <a href="#makers">Makers</a>
+                <a href="/predictor">Predictor</a>
+            </div>
+            <label for="check">
+                <i class="fas fa-bars menu-btn"></i>
+                <i class="fas fa-times close-btn"></i>
+            </label>
+        </header>
+        <div class="content" style="margin-top: 8%;">
+            <div class="info">
+                <h2 class="one"> <br>Predicting Groundwater Quality and Drilling Techniques</span></h2>
+                <p class="two">"Groundwater is the lifeblood of the planet. Predicting its quality and appropriate drilling techniques with accuracy is essential for ensuring sustainable water management and securing the future of our ecosystems and communities."</p>
+                <a href="/predictor" class="info-btn">Start Prediction</a>
+            </div>
+        </div>
+        <!-- <div class="media-icons">
+            <a href="https://www.linkedin.com/in/vasanth-p-90826218b/"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Vasanthengineer4949"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/V51430"><i class="fab fa-twitter"></i></a>
+        </div> -->
+    </section>
+
+    <section id="about">
+        <h2>About Fluid Futures</h2>
+        <p class="about-content" style="text-align: center;">Fluid Futures is an innovative project designed to advance our understanding and management of groundwater resources through precise prediction techniques. Groundwater, a critical component of the global water cycle, supports agriculture, drinking water supplies, and ecological systems. With the growing challenges of climate change, population growth, and water demand, accurate groundwater level predictions have never been more crucial.
+
+        Project Overview
+        Fluid Futures leverages advanced data analysis and machine learning technologies to predict groundwater levels at various locations. By integrating historical groundwater data, meteorological information, and geological factors, our project aims to provide reliable forecasts that help stakeholders make informed decisions about water resource management.
+        </p>
+    </section>
+
+    <section id="makers" class="makers-background">
+        <h2>Meet the Makers</h2>
+        <div class="team">
+            <div class="row">
+                <div class="member">
+                    <img src="{{ url_for('static', filename='Nishi.jpg') }}" alt="Member 1">
+                    <div class="overlay">
+                        <h3>Nishikanta</h3>
+                        <p>Web Developer</p>
+                        <a href="https://www.linkedin.com/in/nishikanta-pradhan-9a9b932ab/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+                <div class="member">
+                    <img src="{{ url_for('static', filename='aj.jpg') }}" alt="Member 2">
+                    <div class="overlay">
+                        <h3>Akankshya</h3>
+                        <p>ML developer</p>
+                        <a href="https://www.linkedin.com/in/akankshya-jena-54a350260/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+                <div class="member">
+                    <img src="{{ url_for('static', filename='laxmi.jpg') }}" alt="Member 3">
+                    <div class="overlay">
+                        <h3>Laxmi Narayan</h3>
+                        <p>Web Developer</p>
+                        <a href="https://www.linkedin.com/in/member3" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="member">
+                    <img src="{{ url_for('static', filename='jyoti.jpg') }}" alt="Member 4">
+                    <div class="overlay">
+                        <h3>Jyotirmayi</h3>
+                        <p>ML Developer</p>
+                        <a href="https://www.linkedin.com/in/jyotirmayi-mahapatra-60a559265/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+                <div class="member">
+                    <img src="{{ url_for('static', filename='himanshu.jpg') }}" alt="Member 5">
+                    <div class="overlay">
+                        <h3>Himanshu</h3>
+                        <p>ML Developer</p>
+                        <a href="https://www.linkedin.com/in/himanshu-kumar-parida-91178130a/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+                <div class="member">
+                    <img src="{{ url_for('static', filename='harshita.jpg') }}" alt="Member 6">
+                    <div class="overlay">
+                        <h3>Harshita</h3>
+                        <p>Presenter</p>
+                        <a href="https://www.linkedin.com/in/harshita-patnaik-b79240289/" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        
+        <div class="media-icons">
+            <a href="https://www.linkedin.com/school/gietuniversitygunupur/"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
+    </footer>
+</body>
+</html>

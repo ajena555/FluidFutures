@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Form</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Prevents scrolling */
+        }
+
+        /* Background Video Styling */
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Ensures the video stays in the background */
+            object-fit: cover; /* Ensures the video covers the entire background */
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 95%;
+            max-width: 1400px;
+            height: 90vh;
+            background: #86c4d948; /* White background with opacity for the container */
+            border-radius: 12px;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px;
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1;
+        }
+
+        .main-container:hover {
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 15px 30px;
+            transform: scale(1.02);
+        }
+
+        .container {
+            width: 45%;
+            text-align: center;
+            padding: 40px;
+            border-right: 1px solid #ddd;
+            border-radius: 12px 0 0 12px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            font-size: 16px;
+            color: #333;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .form-group input:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+        }
+
+        #map {
+            width: 55%;
+            height: 90vh;
+            border-radius: 0 12px 12px 0;
+            box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px;
+            border-left: 1px solid #ddd;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop class="video-bg">
+        <source src="static/videos/background2.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="main-container">
+        <div class="container">
+            <h1>Enter Latitude and Longitude</h1>
+            <form id="coordinatesForm" method="POST" action="{{ url_for('predict') }}">
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="number" id="latitude" name="latitude" step="any" required>
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="number" id="longitude" name="longitude" step="any" required>
+                </div>
+                <button type="submit" class="submit-button">Predict</button>
+            </form>
+        </div>
+        <div id="map"></div>
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const map = L.map('map').setView([37.7749, -122.4194], 8);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            map.on('click', function(e) {
+                const latLng = e.latlng;
+                L.marker(latLng).addTo(map);
+                document.getElementById('latitude').value = latLng.lat;
+                document.getElementById('longitude').value = latLng.lng;
+            });
+        });
+    </script>
+</body>
+</html>
